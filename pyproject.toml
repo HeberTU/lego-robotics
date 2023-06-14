@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "lego-robotics"
+version = "0.1.0"
+description = ""
+authors = ["HeberTU <heber.trujillo@glovoapp.com>"]
+readme = "README.md"
+packages = [{include = "lego_robotics"}]
+
+[tool.poetry.dependencies]
+python = " >=3.8.1,<3.12"
+pybricks = "^3.2.0"
+pybricksdev = "^1.0.0a46"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
