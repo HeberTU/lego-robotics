@@ -31,4 +31,5 @@ def main():
     wait(time=3000)
 
 
-main()
+if __name__ == '__main__':
+    main()
