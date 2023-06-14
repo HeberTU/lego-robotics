@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """
+Example script on how to operate a motor while using config from a module.
 
 Created on: 14/6/23
 @author: Heber Trujillo <heber.trj.urt@gmail.com>
@@ -13,6 +14,7 @@ from example_config.lego_constants import SPEED
 
 
 def main():
+    """Main function."""
     # Initialize a motor on port A.
     example_motor = Motor(port=Port.A)
 
