@@ -9,19 +9,21 @@ from pybricks.pupdevices import Motor
 from pybricks.parameters import Port
 from pybricks.tools import wait
 
+from example_config.lego_constants import SPEED
+
 
 def main():
     # Initialize a motor on port A.
     example_motor = Motor(port=Port.A)
 
     # Make the motor run clockwise at 500 degrees per second.
-    example_motor.run(speed=500)
+    example_motor.run(speed=SPEED)
 
     # Wait for three seconds.
     wait(time=3000)
 
     # Make the motor run counterclockwise at 500 degrees per second.
-    example_motor.run(speed=-500)
+    example_motor.run(speed=-SPEED)
 
     # Wait for three seconds.
     wait(time=3000)
