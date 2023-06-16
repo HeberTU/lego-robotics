@@ -6,8 +6,10 @@ Created on: 14/6/23
 Licence,
 """
 from pybricks.hubs import InventorHub
-from pybricks.parameters import Icon, Side
+from pybricks.parameters import Side
 from pybricks.tools import wait
+
+from src.animations import Face
 
 
 def wake_up(hub: InventorHub) -> None:
@@ -19,17 +21,8 @@ def wake_up(hub: InventorHub) -> None:
     """
     hub.display.orientation(up=Side.LEFT)
 
-    eyes_closed = (
-            Icon.EYE_LEFT_BROW
-            + Icon.EYE_RIGHT_BROW
-    )
-    eyes_opened = (
-            Icon.EYE_LEFT_BROW
-            + Icon.EYE_RIGHT_BROW
-            + Icon.EYE_LEFT_BROW_UP
-            + Icon.EYE_RIGHT_BROW_UP
-    )
-    eyes_animation = [eyes_closed, eyes_opened]
+
+    eyes_animation = [Face.EYES_CLOSE, Face.EYES_OPEN]
     for _ in range(5):
         for icon in eyes_animation:
             hub.display.icon(
@@ -38,10 +31,31 @@ def wake_up(hub: InventorHub) -> None:
             wait(400)
 
 
+def wait_for_tapping(hub: InventorHub):
+
+    while True:
+        hub.display.icon(
+            icon=Face.EYES_OPEN
+        )
+        wait(400)
+        hub.display.icon(
+            icon=Face.EYES_CLOSE
+        )
+        wait(100)
+        hub.display.icon(
+            icon=Face.EYES_OPEN
+        )
+        wait(100)
+        hub.display.icon(
+            icon=Face.EYES_CLOSE
+        )
+
+
 def main():
     """Main Script."""
     hub = InventorHub()
     wake_up(hub=hub)
+    wait_for_tapping(hub=hub)
 
 
 if __name__ == '__main__':
