@@ -10,7 +10,7 @@ from pybricks.parameters import Side
 from pybricks.tools import wait
 
 from src.animations import Face
-
+import urandom
 
 def wake_up(hub: InventorHub) -> None:
     """Play the animation and set the motors simulating the gobble awaking.
@@ -21,9 +21,8 @@ def wake_up(hub: InventorHub) -> None:
     """
     hub.display.orientation(up=Side.LEFT)
 
-
     eyes_animation = [Face.EYES_CLOSE, Face.EYES_OPEN]
-    for _ in range(5):
+    for _ in range(3):
         for icon in eyes_animation:
             hub.display.icon(
                 icon=icon
@@ -31,23 +30,46 @@ def wake_up(hub: InventorHub) -> None:
             wait(400)
 
 
-def wait_for_tapping(hub: InventorHub):
+def waiting_animation(hub: InventorHub, blink_time: int = 100) -> None:
+    """Animate gobbler face while waiting for inputs.
 
+    Args:
+        hub: InventorHub
+            Inventor hub.
+        blink_time: int = 100
+            ms for blinking action.
+    """
+    hub.display.icon(
+        icon=Face.EYES_OPEN
+    )
+    wait(
+        time=urandom.randrange(
+            3000,
+            6000,
+            1000
+        )
+    )
+    for _ in range(urandom.randrange(1, 3, 1)):
+        hub.display.icon(
+            icon=Face.EYES_CLOSE
+        )
+        wait(time=blink_time)
+        hub.display.icon(
+            icon=Face.EYES_OPEN
+        )
+        wait(time=blink_time)
+
+
+def wait_for_tapping(hub: InventorHub):
+    """Wait for tapping.
+
+    Args:
+        hub: InventorHub
+            Inventor hub.
+    """
     while True:
-        hub.display.icon(
-            icon=Face.EYES_OPEN
-        )
-        wait(400)
-        hub.display.icon(
-            icon=Face.EYES_CLOSE
-        )
-        wait(100)
-        hub.display.icon(
-            icon=Face.EYES_OPEN
-        )
-        wait(100)
-        hub.display.icon(
-            icon=Face.EYES_CLOSE
+        waiting_animation(
+            hub=hub
         )
 
 
