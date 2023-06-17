@@ -6,9 +6,9 @@ Created on: 14/6/23
 Licence,
 """
 from pybricks.hubs import InventorHub
-from pybricks.parameters import Side, Port, Stop
+from pybricks.parameters import Side, Port, Stop, Color
 from pybricks.tools import wait
-from pybricks.pupdevices import Motor
+from pybricks.pupdevices import Motor, ColorSensor
 from pybricks.geometry import Axis
 
 from src.animations import Face
@@ -68,12 +68,46 @@ def waiting_animation(hub: InventorHub, blink_time: int = 100) -> None:
         wait(time=blink_time)
 
 
-def wait_for_tapping(hub: InventorHub, motor: Motor):
+def eat_paper(color_sensor: ColorSensor, motor: Motor, paper_color: Color) -> None:
+
+    # while True:
+    #     print(color_sensor.color())
+    #     wait(20)
+
+    while color_sensor.color() != paper_color:
+        wait(500)
+    motor.run(speed=300)
+
+    while color_sensor.color() != Color.BLUE:
+        wait(1000)
+
+    motor.stop()
+
+    motor.run_target(
+        speed=300,
+        target_angle=290,
+        then=Stop.BRAKE,
+        wait=True
+    )
+
+
+def wait_for_tapping(
+        hub: InventorHub,
+        motor: Motor,
+        color_sensor: ColorSensor,
+        paper_color: Color
+) -> None:
     """Wait for tapping.
 
     Args:
         hub: InventorHub
             Inventor hub.
+        motor: Motor
+            Motor controlling mouth movement
+        color_sensor: ColorSensor
+            Color sensor at mouth to detect paper
+        paper_color: Color
+            color of the paper that the gobbler will eat.
     """
 
     while True:
@@ -91,17 +125,26 @@ def wait_for_tapping(hub: InventorHub, motor: Motor):
             hub.display.icon(
                 icon=Face.EYES_ANGRY
             )
-            break
+            eat_paper(
+                color_sensor=color_sensor,
+                motor=motor,
+                paper_color=paper_color,
+            )
 
 
 def main():
     """Main Script."""
     hub = InventorHub(top_side=-Axis.X, front_side=-Axis.Y)
     motor = Motor(Port.A)
+    color_sensor = ColorSensor(Port.E)
+    color_sensor.lights.off()
     wake_up(hub=hub, motor=motor)
-    wait_for_tapping(hub=hub, motor=motor)
-    while True:
-        pass
+    wait_for_tapping(
+        hub=hub,
+        motor=motor,
+        color_sensor=color_sensor,
+        paper_color=Color.WHITE,
+    )
 
 
 if __name__ == '__main__':
