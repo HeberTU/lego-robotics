@@ -69,7 +69,13 @@ def waiting_animation(hub: InventorHub, blink_time: int = 100) -> None:
 
 
 def eat_paper(color_sensor: ColorSensor, motor: Motor, paper_color: Color) -> None:
+    """Eat paper.
 
+    Args:
+        color_sensor: ColorSensor
+        motor: Motor
+        paper_color: Color
+    """
     while color_sensor.color() != paper_color:
         wait(500)
     motor.run(speed=300)
