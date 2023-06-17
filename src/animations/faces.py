@@ -17,10 +17,10 @@ class Face:
     EYES_OPEN: Matrix = Matrix(
         [
             [OFF, OFF, OFF, OFF, OFF],
-            [ON,  ON,  OFF, ON,  ON],
+            [OFF, OFF, OFF, OFF, OFF],
             [ON,  ON,  OFF, ON,  ON],
             [ON,  ON, OFF,  ON,  ON],
-            [OFF, OFF, OFF, OFF, OFF],
+            [ON,  ON, OFF,  ON,  ON],
         ]
     )
 
@@ -28,9 +28,19 @@ class Face:
         [
             [OFF, OFF, OFF, OFF, OFF],
             [OFF, OFF, OFF, OFF, OFF],
+            [OFF, OFF, OFF, OFF, OFF],
             [ON,  ON,  OFF, ON,  ON],
             [OFF, OFF, OFF, OFF, OFF],
+        ]
+    )
+
+    EYES_ANGRY = Matrix(
+        [
+            [ON,  OFF, OFF, OFF, ON],
+            [OFF, ON,  OFF, ON,  OFF],
             [OFF, OFF, OFF, OFF, OFF],
+            [ON,  ON,  OFF, ON,  ON],
+            [ON,  ON,  OFF, ON,  ON],
         ]
     )
 
