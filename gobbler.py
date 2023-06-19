@@ -81,7 +81,7 @@ def eat_paper(color_sensor: ColorSensor, motor: Motor, paper_color: Color) -> No
     motor.run(speed=300)
 
     while color_sensor.color() != Color.BLUE:
-        wait(500)
+        wait(2000)
 
     motor.stop()
 
