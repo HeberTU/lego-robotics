@@ -76,12 +76,19 @@ def eat_paper(color_sensor: ColorSensor, motor: Motor, paper_color: Color) -> No
         motor: Motor
         paper_color: Color
     """
-    while color_sensor.color() != paper_color:
-        wait(500)
+    while color_sensor.color() == Color.BLUE:
+        print("waiting for paper")
+        wait(1000)
     motor.run(speed=300)
 
-    while color_sensor.color() != Color.BLUE:
-        wait(2000)
+    while (color_sensor.color() != Color.BLUE) or (motor.speed() == 0):
+        print("eating")
+        wait(1000)
+
+    print("Finish")
+    color_sensor.lights.off()
+
+    wait(500)
 
     motor.stop()
 
@@ -150,4 +157,5 @@ def main():
 
 
 if __name__ == '__main__':
+    # pybricksdev run ble gobbler.py
     main()
