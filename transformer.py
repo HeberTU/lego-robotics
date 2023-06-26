@@ -36,14 +36,39 @@ def initialize_robot(
         )
     )
 
+    set_legs_to_initial_position(
+        right_leg=legs[0],
+        left_leg=legs[1],
+        speed=speed,
+    )
+
+    return legs
+
+
+def set_legs_to_initial_position(
+    right_leg: Motor,
+    left_leg: Motor,
+    speed: int
+) -> None:
+    """"""
+    legs = (right_leg, left_leg)
+
     for leg in legs:
         leg.run_target(
             speed=speed,
             target_angle=270,
-            wait=False
+            wait=True
         )
 
-    return legs
+
+def walk_forward(right_leg: Motor, left_leg: Motor) -> None:
+    """"""
+    right_leg.run(
+        speed=-200
+    )
+    left_leg.run(
+        speed=200
+    )
 
 
 def main():
@@ -53,7 +78,13 @@ def main():
     right_leg, left_leg = initialize_robot(
         right_leg_port=Port.A,
         left_leg_port=Port.B,
-        speed=100
+        speed=300
+    )
+
+
+    walk_forward(
+        right_leg=right_leg,
+        left_leg=left_leg,
     )
 
     while True:
