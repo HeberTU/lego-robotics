@@ -14,41 +14,52 @@ from pybricks.tools import wait
 
 
 def initialize_robot(
-    right_leg_port: Port, left_leg_port: Port
+    right_leg_port: Port,
+    left_leg_port: Port,
+    speed: int
 ):
     """
 
     Args:
-        right_leg_port:
-        left_leg_port:
-
+        right_leg_port: Port
+        left_leg_port: Port
+        speed: int
     Returns:
 
     """
-    right_leg = Motor(
-        port=right_leg_port,
+    legs = (
+        Motor(
+            port=right_leg_port,
+        ),
+        Motor(
+            port=left_leg_port,
+        )
     )
 
-    left_leg = Motor(
-        port=left_leg_port,
-    )
+    for leg in legs:
+        leg.run_target(
+            speed=speed,
+            target_angle=270,
+            wait=False
+        )
 
-    return right_leg, left_leg
+    return legs
 
 
 def main():
     """Main script"""
     hub = InventorHub()
 
-    legs = initialize_robot(
+    right_leg, left_leg = initialize_robot(
         right_leg_port=Port.A,
-        left_leg_port=Port.B
+        left_leg_port=Port.B,
+        speed=100
     )
 
     while True:
 
-        print(f"right angle: {legs.get('right').angle()}")
-        print(f"left angle: {legs.get('left').angle()}")
+        print(f"right angle: {right_leg.angle()}")
+        print(f"left angle: {left_leg.angle()}")
         wait(1000)
 
 
