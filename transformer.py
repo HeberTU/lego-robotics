@@ -5,7 +5,6 @@ Created on: 26/6/23
 @author: Heber Trujillo <heber.trj.urt@gmail.com>
 Licence,
 """
-# from typing import Dict
 from pybricks.hubs import InventorHub
 from pybricks.pupdevices import Motor
 from pybricks.parameters import Port
