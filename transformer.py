@@ -111,10 +111,10 @@ def set_legs_to_initial_position(
 
 
 def walk(
-    right_leg: Motor,
-    left_leg: Motor,
-    speed: int,
-    forward: bool = True
+        right_leg: Motor,
+        left_leg: Motor,
+        speed: int,
+        forward: bool = True
 ) -> None:
     """
 
@@ -137,75 +137,111 @@ def walk(
         speed=speed * -direction
     )
 
+
+def turn(
+        right_leg: Motor,
+        left_leg: Motor,
+        speed: int,
+        left: bool = True
+) -> None:
+    """Turn into the provideddirection
+
+    Args:
+        right_leg: Motor
+            Right leg motor.
+        left_leg: Motor
+            Left leg motor.
+        speed: int
+            degrees / seconds.
+        left: bool = True
+            If true, the turn will be in the left direction.
+    """
+    rotation_angle = 180
+
+    direction = -1 if left else 1
+
+    wating_to_finish = get_waiting_time_to_finish_rotation(
+        speed=speed,
+        rotation_angle=rotation_angle
+    )
+
+    left_leg.run_angle(
+        speed=speed * -direction,
+        rotation_angle=rotation_angle,
+        wait=False
+    )
+    right_leg.run_angle(
+        speed=speed * -direction,
+        rotation_angle=rotation_angle,
+        wait=False
+    )
+    wait(wating_to_finish)
+
+    # One step forward to balance
+    left_leg.run_angle(
+        speed=speed * -direction,
+        rotation_angle=rotation_angle,
+        wait=False
+    )
+
+    right_leg.run_angle(
+        speed=speed * direction,
+        rotation_angle=rotation_angle,
+        wait=False
+    )
+    wait(wating_to_finish)
+
+
 def turn_left_by_n_steps(
         right_leg: Motor,
         left_leg: Motor,
+        speed: int,
         steps: int
 ) -> None:
+    """Turn left to n steps.
+
+    Args:
+        right_leg: Motor
+            Right leg motor.
+        left_leg: Motor
+            Left leg motor.
+        speed: int
+            degrees / seconds.
+        steps: int
+            Number of steps to turn, each step is equivalent to 80 deg turn.
+    """
     left_leg.stop()
     right_leg.stop()
 
     left_leg.reset_angle()
     right_leg.reset_angle()
 
-    for leg in [right_leg, left_leg]:
-        leg.stop()
-        leg.reset_angle()
+    set_legs_to_initial_position(
+        right_leg=right_leg,
+        left_leg=left_leg,
+        speed=speed,
+    )
 
-        leg.run_target(
-            speed=300,
-            target_angle=-90,
-            wait=False
-        )
-
-    wait(1000)
-
-    print(f"Right Angle {right_leg.angle()}")
-    print(f"Left Angle {right_leg.angle()}")
     for i in range(steps):
-        print(f"rotation {i}")
-        left_leg.run_angle(
-            speed=250,
-            rotation_angle=180,
-            wait=False
+        turn(
+            right_leg=right_leg,
+            left_leg=left_leg,
+            speed=speed
         )
-
-        right_leg.run_angle(
-            speed=250,
-            rotation_angle=180,
-            wait=False
-        )
-        wait(720)
-        left_leg.run_angle(
-            speed=250,
-            rotation_angle=180,
-            wait=False
-        )
-
-        right_leg.run_angle(
-            speed=-250,
-            rotation_angle=180,
-            wait=False
-        )
-        wait(720)
-        print(f"Right Angle {right_leg.angle()}")
-        print(f"Left Angle {right_leg.angle()}")
 
     for leg in [right_leg, left_leg]:
         leg.reset_angle()
 
-
-def test_motors(right_leg: Motor) -> None:
-    print(f"Initial angle: {right_leg.angle()}")
-    right_leg.run_angle(
-        speed=200,
-        rotation_angle=360
+    set_legs_to_initial_position(
+        right_leg=right_leg,
+        left_leg=left_leg,
+        speed=300,
     )
 
 
 def main():
     """Main script"""
-    hub = InventorHub()
+    _ = InventorHub()
     eyes = UltrasonicSensor(Port.D)
 
     right_leg, left_leg = initialize_robot(
@@ -227,24 +263,16 @@ def main():
             speed=200,
             forward=True
         )
-    #
-    #     while eyes.distance() > 50:
-    #         wait(20)
-    #
-    #     turn_left_by_n_steps(
-    #         right_leg=right_leg,
-    #         left_leg=left_leg,
-    #         steps=5
-    #     )
-    #
-    #     set_legs_to_initial_position(
-    #         right_leg=right_leg,
-    #         left_leg=left_leg,
-    #         speed=300,
-    #     )
-    #
-    # print(f"Final right angle: {right_leg.angle()}")
-    # print(f"Final left angle: {left_leg.angle()}")
+
+        while eyes.distance() > 50:
+            wait(20)
+
+        turn_left_by_n_steps(
+            right_leg=right_leg,
+            left_leg=left_leg,
+            speed=300,
+            steps=5
+        )
 
 
 if __name__ == '__main__':
