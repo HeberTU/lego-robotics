@@ -14,7 +14,7 @@ from pybricks.tools import wait
 from src.movement.walking import (
     set_legs_to_initial_position,
     walk,
-    turn_left_by_n_steps
+    turn_by_n_steps,
 )
 
 
@@ -72,11 +72,12 @@ def main():
         while eyes.distance() > 50:
             wait(20)
 
-        turn_left_by_n_steps(
+        turn_by_n_steps(
             right_leg=right_leg,
             left_leg=left_leg,
             speed=200,
-            steps=5
+            steps=6,
+            left=False,
         )
 
 
