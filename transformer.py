@@ -5,6 +5,7 @@ Created on: 26/6/23
 @author: Heber Trujillo <heber.trj.urt@gmail.com>
 Licence,
 """
+import umath
 from pybricks.hubs import InventorHub
 from pybricks.pupdevices import Motor, UltrasonicSensor
 from pybricks.parameters import Port
@@ -13,9 +14,9 @@ from pybricks.tools import wait
 
 
 def initialize_robot(
-    right_leg_port: Port,
-    left_leg_port: Port,
-    speed: int
+        right_leg_port: Port,
+        left_leg_port: Port,
+        speed: int
 ):
     """
 
@@ -37,26 +38,53 @@ def initialize_robot(
         )
     )
 
-
-
     return legs
 
 
+def get_waiting_time_to_finish_rotation(
+    speed: int,
+    rotation_angle: int
+) -> int:
+    """Get how much time is needed to wait for a motor to rotate the specified
+    degrees.
+
+    Args:
+        speed: int
+            degrees / seconds
+        rotation_angle: int
+            number of degrees to rotate
+
+    Returns:
+        int:
+            Number of milliseconds to wait.
+    """
+    return umath.ceil((rotation_angle / speed) * 1000)
+
 def set_legs_to_initial_position(
-    right_leg: Motor,
-    left_leg: Motor,
-    speed: int
+        right_leg: Motor,
+        left_leg: Motor,
+        speed: int,
+        initial_angle: int = -90
 ) -> None:
     """"""
-    legs = (right_leg, left_leg)
+    # right_leg.reset_angle()
+    right_rotation_angle = (right_leg.angle() + initial_angle)
 
-    for leg in legs:
-        leg.run_target(
-            speed=speed,
-            target_angle=-90,
-            wait=True
-        )
+    print(f"Rotation Angle: {right_rotation_angle}")
 
+    right_leg.run_angle(
+        speed=-speed,
+        rotation_angle=right_rotation_angle,
+        wait=False
+    )
+
+    right_waiting_ms = umath.ceil((right_rotation_angle / speed) * 1000)
+    print(f"waiting time: {right_waiting_ms}")
+    wait(right_waiting_ms)
+
+    print(f"Final Angle: {right_leg.angle()}")
+    right_leg.reset_angle()
+    print(f"Reseted Angle: {right_leg.angle()}")
 
 def walk_forward(right_leg: Motor, left_leg: Motor) -> None:
     """"""
@@ -66,12 +94,13 @@ def walk_forward(right_leg: Motor, left_leg: Motor) -> None:
     left_leg.run(
         speed=200
     )
-def turn_left_by_n_steps(
-    right_leg: Motor,
-    left_leg: Motor,
-    steps: int
-) -> None:
 
+
+def turn_left_by_n_steps(
+        right_leg: Motor,
+        left_leg: Motor,
+        steps: int
+) -> None:
     left_leg.stop()
     right_leg.stop()
 
@@ -121,14 +150,11 @@ def turn_left_by_n_steps(
         print(f"Right Angle {right_leg.angle()}")
         print(f"Left Angle {right_leg.angle()}")
 
-
     for leg in [right_leg, left_leg]:
         leg.reset_angle()
 
 
-
 def test_motors(right_leg: Motor) -> None:
-
     print(f"Initial angle: {right_leg.angle()}")
     right_leg.run_angle(
         speed=200,
@@ -153,35 +179,30 @@ def main():
         speed=300,
     )
 
-    while True:
-
-        walk_forward(
-            right_leg=right_leg,
-            left_leg=left_leg,
-        )
-
-        while eyes.distance() > 50:
-
-            wait(20)
-
-        turn_left_by_n_steps(
-            right_leg=right_leg,
-            left_leg=left_leg,
-            steps=5
-        )
-
-        set_legs_to_initial_position(
-            right_leg=right_leg,
-            left_leg=left_leg,
-            speed=300,
-        )
-
-
-
-
-    print(f"Final right angle: {right_leg.angle()}")
-    print(f"Final left angle: {left_leg.angle()}")
-
+    # while True:
+    #
+    #     walk_forward(
+    #         right_leg=right_leg,
+    #         left_leg=left_leg,
+    #     )
+    #
+    #     while eyes.distance() > 50:
+    #         wait(20)
+    #
+    #     turn_left_by_n_steps(
+    #         right_leg=right_leg,
+    #         left_leg=left_leg,
+    #         steps=5
+    #     )
+    #
+    #     set_legs_to_initial_position(
+    #         right_leg=right_leg,
+    #         left_leg=left_leg,
+    #         speed=300,
+    #     )
+    #
+    # print(f"Final right angle: {right_leg.angle()}")
+    # print(f"Final left angle: {left_leg.angle()}")
 
 
 if __name__ == '__main__':
