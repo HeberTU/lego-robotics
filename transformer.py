@@ -16,14 +16,12 @@ from pybricks.tools import wait
 def initialize_robot(
         right_leg_port: Port,
         left_leg_port: Port,
-        speed: int
 ):
     """
 
     Args:
         right_leg_port: Port
         left_leg_port: Port
-        speed: int
     Returns:
 
     """
@@ -132,17 +130,11 @@ def walk(
     """
     direction = -1 if forward else 1
 
-    set_legs_to_initial_position(
-        right_leg=right_leg,
-        left_leg=left_leg,
-        speed=speed,
-    )
-
     right_leg.run(
         speed=speed * direction
     )
     left_leg.run(
-        speed=speed * -1 * direction
+        speed=speed * -direction
     )
 
 def turn_left_by_n_steps(
@@ -219,14 +211,21 @@ def main():
     right_leg, left_leg = initialize_robot(
         right_leg_port=Port.A,
         left_leg_port=Port.B,
-        speed=300
+    )
+
+    set_legs_to_initial_position(
+        right_leg=right_leg,
+        left_leg=left_leg,
+        speed=300,
     )
 
     while True:
 
-        walk_forward(
+        walk(
             right_leg=right_leg,
             left_leg=left_leg,
+            speed=200,
+            forward=True
         )
     #
     #     while eyes.distance() > 50:
