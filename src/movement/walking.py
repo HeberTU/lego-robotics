@@ -131,24 +131,25 @@ def turn(
 
     # One step forward to balance
     left_leg.run_angle(
-        speed=speed * -direction,
+        speed=speed,
         rotation_angle=rotation_angle,
         wait=False
     )
 
     right_leg.run_angle(
-        speed=speed * direction,
+        speed=-speed,
         rotation_angle=rotation_angle,
         wait=False
     )
     wait(wating_to_finish + 200)
 
 
-def turn_left_by_n_steps(
-        right_leg: Motor,
-        left_leg: Motor,
-        speed: int,
-        steps: int
+def turn_by_n_steps(
+    right_leg: Motor,
+    left_leg: Motor,
+    speed: int,
+    steps: int,
+    left: bool = True
 ) -> None:
     """Turn left to n steps.
 
@@ -161,6 +162,8 @@ def turn_left_by_n_steps(
             degrees / seconds.
         steps: int
             Number of steps to turn, each step is equivalent to 80 deg turn.
+        left: bool = True
+            If true, the turn will be in the left direction.
     """
     left_leg.stop()
     right_leg.stop()
@@ -168,17 +171,21 @@ def turn_left_by_n_steps(
     left_leg.reset_angle()
     right_leg.reset_angle()
 
+    initial_angle = -90 if left else 90
+
     set_legs_to_initial_position(
         right_leg=right_leg,
         left_leg=left_leg,
-        speed=300,
+        speed=speed,
+        initial_angle=initial_angle
     )
 
     for i in range(steps):
         turn(
             right_leg=right_leg,
             left_leg=left_leg,
-            speed=speed
+            speed=speed,
+            left=left
         )
 
     for leg in [right_leg, left_leg]:
@@ -187,5 +194,5 @@ def turn_left_by_n_steps(
     set_legs_to_initial_position(
         right_leg=right_leg,
         left_leg=left_leg,
-        speed=300,
+        speed=speed,
     )
