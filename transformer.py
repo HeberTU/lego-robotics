@@ -66,13 +66,23 @@ def calibrate_robot(
     print(f" Torso final angle {torso.angle()}")
 
 
-
 def main():
     """Main script"""
+    distance_sensor = False
     _ = InventorHub()
 
-    torso = Motor(port=Port.E)
+    if distance_sensor:
+        eyes = UltrasonicSensor(port=Port.D)
+    else:
+        class MockEyes:
+            def distance(self) -> int:
+                wait(1000)
+                return 100
 
+        eyes = MockEyes()
+
+
+    torso = Motor(port=Port.E)
     right_leg, left_leg = initialize_robot(
         right_leg_port=Port.A,
         left_leg_port=Port.B,
@@ -82,31 +92,31 @@ def main():
         torso=torso
     )
 
-    # set_legs_to_initial_position(
-    #     right_leg=right_leg,
-    #     left_leg=left_leg,
-    #     speed=200,
-    # )
+    set_legs_to_initial_position(
+        right_leg=right_leg,
+        left_leg=left_leg,
+        speed=200,
+    )
 
-    # while True:
-    #
-    #     walk(
-    #         right_leg=right_leg,
-    #         left_leg=left_leg,
-    #         speed=200,
-    #         forward=True
-    #     )
-    #
-    #     while eyes.distance() > 50:
-    #         wait(20)
-    #
-    #     turn_by_n_steps(
-    #         right_leg=right_leg,
-    #         left_leg=left_leg,
-    #         speed=200,
-    #         steps=6,
-    #         left=False,
-    #     )
+    while True:
+
+        walk(
+            right_leg=right_leg,
+            left_leg=left_leg,
+            speed=200,
+            forward=True
+        )
+
+        while eyes.distance() > 50:
+            wait(20)
+
+        turn_by_n_steps(
+            right_leg=right_leg,
+            left_leg=left_leg,
+            speed=200,
+            steps=6,
+            left=False,
+        )
 
 
 if __name__ == '__main__':
