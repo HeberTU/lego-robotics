@@ -44,41 +44,69 @@ def initialize_robot(
     return legs
 
 
+def calibrate_robot(
+    torso: Motor
+) -> None:
+
+    print(f" Torso initial angle {torso.angle()}")
+
+    torso.run_time(
+        speed=-100,
+        time=1000
+    )
+
+    torso.run(
+        speed=50
+    )
+    while not torso.stalled():
+        wait(5)
+
+    torso.stop()
+    torso.reset_angle()
+    print(f" Torso final angle {torso.angle()}")
+
+
+
 def main():
     """Main script"""
     _ = InventorHub()
-    eyes = UltrasonicSensor(Port.D)
+
+    torso = Motor(port=Port.E)
 
     right_leg, left_leg = initialize_robot(
         right_leg_port=Port.A,
         left_leg_port=Port.B,
     )
 
-    set_legs_to_initial_position(
-        right_leg=right_leg,
-        left_leg=left_leg,
-        speed=200,
+    calibrate_robot(
+        torso=torso
     )
 
-    while True:
+    # set_legs_to_initial_position(
+    #     right_leg=right_leg,
+    #     left_leg=left_leg,
+    #     speed=200,
+    # )
 
-        walk(
-            right_leg=right_leg,
-            left_leg=left_leg,
-            speed=200,
-            forward=True
-        )
-
-        while eyes.distance() > 50:
-            wait(20)
-
-        turn_by_n_steps(
-            right_leg=right_leg,
-            left_leg=left_leg,
-            speed=200,
-            steps=6,
-            left=False,
-        )
+    # while True:
+    #
+    #     walk(
+    #         right_leg=right_leg,
+    #         left_leg=left_leg,
+    #         speed=200,
+    #         forward=True
+    #     )
+    #
+    #     while eyes.distance() > 50:
+    #         wait(20)
+    #
+    #     turn_by_n_steps(
+    #         right_leg=right_leg,
+    #         left_leg=left_leg,
+    #         speed=200,
+    #         steps=6,
+    #         left=False,
+    #     )
 
 
 if __name__ == '__main__':
