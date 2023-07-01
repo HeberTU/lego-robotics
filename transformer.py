@@ -58,7 +58,7 @@ def get_waiting_time_to_finish_rotation(
     """
     return umath.ceil((rotation_angle / speed) * 1000)
 
-
+# TODO heber.trujilloglovoapp.com - 1/7/23: Change to run target method.
 def set_legs_to_initial_position(
         right_leg: Motor,
         left_leg: Motor,
