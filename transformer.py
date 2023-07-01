@@ -68,10 +68,12 @@ def calibrate_robot(
 
 def main():
     """Main script"""
-    distance_sensor = False
+    is_distance_sensor_connected: bool = False
+    do_calibration: bool = False
+
     _ = InventorHub()
 
-    if distance_sensor:
+    if is_distance_sensor_connected:
         eyes = UltrasonicSensor(port=Port.D)
     else:
         class MockEyes:
@@ -81,16 +83,17 @@ def main():
 
         eyes = MockEyes()
 
-
     torso = Motor(port=Port.E)
+
     right_leg, left_leg = initialize_robot(
         right_leg_port=Port.A,
         left_leg_port=Port.B,
     )
 
-    calibrate_robot(
-        torso=torso
-    )
+    if do_calibration:
+        calibrate_robot(
+            torso=torso
+        )
 
     set_legs_to_initial_position(
         right_leg=right_leg,
