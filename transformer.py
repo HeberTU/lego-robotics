@@ -112,13 +112,37 @@ def set_legs_to_initial_position(
     left_leg.reset_angle()
 
 
-def walk_forward(right_leg: Motor, left_leg: Motor) -> None:
-    """"""
+def walk(
+    right_leg: Motor,
+    left_leg: Motor,
+    speed: int,
+    forward: bool = True
+) -> None:
+    """
+
+    Args:
+        right_leg: Motor
+            Right leg motor.
+        left_leg: Motor
+            Left leg motor.
+        speed: int
+            degrees / seconds.
+        forward: bool = True
+            If True, the walking movement will be forward.
+    """
+    direction = -1 if forward else 1
+
+    set_legs_to_initial_position(
+        right_leg=right_leg,
+        left_leg=left_leg,
+        speed=speed,
+    )
+
     right_leg.run(
-        speed=-200
+        speed=speed * direction
     )
     left_leg.run(
-        speed=200
+        speed=speed * -1 * direction
     )
 
 def turn_left_by_n_steps(
@@ -198,18 +222,12 @@ def main():
         speed=300
     )
 
-    set_legs_to_initial_position(
-        right_leg=right_leg,
-        left_leg=left_leg,
-        speed=300,
-    )
+    while True:
 
-    # while True:
-    #
-    #     walk_forward(
-    #         right_leg=right_leg,
-    #         left_leg=left_leg,
-    #     )
+        walk_forward(
+            right_leg=right_leg,
+            left_leg=left_leg,
+        )
     #
     #     while eyes.distance() > 50:
     #         wait(20)
