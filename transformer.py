@@ -81,17 +81,17 @@ def set_legs_to_initial_position(
             Initial angle to rotate.
     """
 
-    right_rotation_angle = (right_leg.angle() + initial_angle)
-    left_rotation_angle = (left_leg.angle() + initial_angle)
+    right_rotation_angle = (initial_angle - right_leg.angle())
+    left_rotation_angle = (initial_angle - left_leg.angle())
 
     right_leg.run_angle(
-        speed=-speed,
+        speed=speed,
         rotation_angle=right_rotation_angle,
         wait=False
     )
 
     left_leg.run_angle(
-        speed=-speed,
+        speed=speed,
         rotation_angle=left_rotation_angle,
         wait=False
     )
@@ -104,7 +104,7 @@ def set_legs_to_initial_position(
         )
     )
 
-    wait(time_to_wait)
+    wait(time_to_wait + 100)
 
     right_leg.reset_angle()
     left_leg.reset_angle()
@@ -175,7 +175,7 @@ def turn(
         rotation_angle=rotation_angle,
         wait=False
     )
-    wait(wating_to_finish)
+    wait(wating_to_finish + 200)
 
     # One step forward to balance
     left_leg.run_angle(
@@ -189,7 +189,7 @@ def turn(
         rotation_angle=rotation_angle,
         wait=False
     )
-    wait(wating_to_finish)
+    wait(wating_to_finish + 200)
 
 
 def turn_left_by_n_steps(
@@ -219,7 +219,7 @@ def turn_left_by_n_steps(
     set_legs_to_initial_position(
         right_leg=right_leg,
         left_leg=left_leg,
-        speed=speed,
+        speed=300,
     )
 
     for i in range(steps):
