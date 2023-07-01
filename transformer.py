@@ -42,8 +42,8 @@ def initialize_robot(
 
 
 def get_waiting_time_to_finish_rotation(
-    speed: int,
-    rotation_angle: int
+        speed: int,
+        rotation_angle: int
 ) -> int:
     """Get how much time is needed to wait for a motor to rotate the specified
     degrees.
@@ -60,17 +60,31 @@ def get_waiting_time_to_finish_rotation(
     """
     return umath.ceil((rotation_angle / speed) * 1000)
 
+
 def set_legs_to_initial_position(
         right_leg: Motor,
         left_leg: Motor,
         speed: int,
         initial_angle: int = -90
 ) -> None:
-    """"""
-    # right_leg.reset_angle()
-    right_rotation_angle = (right_leg.angle() + initial_angle)
+    """Set legs to the initial position to do any movement.
 
-    print(f"Rotation Angle: {right_rotation_angle}")
+        The initial position is one foot completely forward and the other
+        completely backward.
+
+    Args:
+        right_leg: Motor
+            Right leg motor.
+        left_leg: Motor
+            Left leg motor
+        speed: int
+            degrees / seconds
+        initial_angle:
+            Initial angle to rotate.
+    """
+
+    right_rotation_angle = (right_leg.angle() + initial_angle)
+    left_rotation_angle = (left_leg.angle() + initial_angle)
 
     right_leg.run_angle(
         speed=-speed,
@@ -78,13 +92,25 @@ def set_legs_to_initial_position(
         wait=False
     )
 
-    right_waiting_ms = umath.ceil((right_rotation_angle / speed) * 1000)
-    print(f"waiting time: {right_waiting_ms}")
-    wait(right_waiting_ms)
+    left_leg.run_angle(
+        speed=-speed,
+        rotation_angle=left_rotation_angle,
+        wait=False
+    )
 
-    print(f"Final Angle: {right_leg.angle()}")
+    time_to_wait = get_waiting_time_to_finish_rotation(
+        speed=speed,
+        rotation_angle=max(
+            abs(right_rotation_angle),
+            abs(left_rotation_angle)
+        )
+    )
+
+    wait(time_to_wait)
+
     right_leg.reset_angle()
-    print(f"Reseted Angle: {right_leg.angle()}")
+    left_leg.reset_angle()
+
 
 def walk_forward(right_leg: Motor, left_leg: Motor) -> None:
     """"""
@@ -94,7 +120,6 @@ def walk_forward(right_leg: Motor, left_leg: Motor) -> None:
     left_leg.run(
         speed=200
     )
-
 
 def turn_left_by_n_steps(
         right_leg: Motor,
