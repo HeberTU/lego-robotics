@@ -45,9 +45,8 @@ def initialize_robot(
 
 
 def calibrate_robot(
-    torso: Motor
+        torso: Motor
 ) -> None:
-
     print(f" Torso initial angle {torso.angle()}")
 
     # torso.run_time(
@@ -76,15 +75,29 @@ def main():
     if is_distance_sensor_connected:
         eyes = UltrasonicSensor(port=Port.D)
     else:
-        class MockEyes:
+        class MockUltrasonicSensor:
 
             def __init__(self, time_to_wait: int):
-                pass
+                """Initialize a mock whenever a distance sensor is not
+                connected.
+
+                Args:
+                    time_to_wait: int
+                        Millisecond to wait until simulate an obstacle.
+                """
+                self.time_to_wait = time_to_wait
+
             def distance(self) -> int:
-                wait(8000)
+                """Simulate an obstacle every time_to_wait milliseconds.
+
+                Returns:
+                    int:
+                        Detect an object a 10cm close to de sensor.
+                """
+                wait(self.time_to_wait)
                 return 10
 
-        eyes = MockEyes()
+        eyes = MockUltrasonicSensor(time_to_wait=800)
 
     torso = Motor(port=Port.E)
 
