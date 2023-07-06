@@ -50,10 +50,10 @@ def calibrate_robot(
 
     print(f" Torso initial angle {torso.angle()}")
 
-    torso.run_time(
-        speed=-100,
-        time=1000
-    )
+    # torso.run_time(
+    #     speed=-100,
+    #     time=1000
+    # )
 
     torso.run(
         speed=50
@@ -71,15 +71,18 @@ def main():
     is_distance_sensor_connected: bool = False
     do_calibration: bool = False
 
-    _ = InventorHub()
-
+    hub = InventorHub()
+    print(f"Hub charger status {hub.battery.voltage()}")
     if is_distance_sensor_connected:
         eyes = UltrasonicSensor(port=Port.D)
     else:
         class MockEyes:
+
+            def __init__(self, time_to_wait: int):
+                pass
             def distance(self) -> int:
-                wait(1000)
-                return 100
+                wait(8000)
+                return 10
 
         eyes = MockEyes()
 
