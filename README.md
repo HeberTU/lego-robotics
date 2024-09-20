@@ -63,19 +63,16 @@ source .venv/bin/activate
 
 ## Connect your Lego Hub
 
-This project runs on LEGO® MINDSTORMS®, and SPIKE® hubs. First you have to 
-install the pybrick frimware on the hub following these [instructions](https://pybricks.com/learn/getting-started/install-pybricks/#installing-pybricks-on-the-hub)
+This project runs on LEGO® MINDSTORMS® and SPIKE® hubs. Follow these steps to get started: 
 
-Once you have installed, make sure you have connected at least one time your 
-hub to you computer via Bluetooth using the pybricks [web-based code editor](https://code.pybricks.com/)
-
-Then you can run the following command 
+1. Install the Pybricks firmware on your hub by following the official [instructions](https://pybricks.com/learn/getting-started/install-pybricks/#installing-pybricks-on-the-hub)
+2. Connect your hub to your computer via Bluetooth using the Pybricks [web-based code editor](https://code.pybricks.com/) at least once.
+3. Run the following command in your terminal:
 
 ```
-make run filename=demo.py
+make run
 ```
-
-
+You should hear a beep, and the hub's display will show "Hello world!".
 
 
 

@@ -15,10 +15,8 @@ def main():
 
     hub = InventorHub()
     hub.display.orientation(up=Side.TOP)
-    hub.display.icon(
-        icon=Characters.OK
-    )
-    wait(1000)
+    hub.speaker.beep()
+    hub.display.text("Hello world!")
 
 
 
