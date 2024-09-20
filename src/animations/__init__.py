@@ -6,7 +6,9 @@ Created on: 16/6/23
 Licence,
 """
 from src.animations.faces import Face
+from src.animations.characters import Characters
 
 __all__ = [
-    "Face"
+    "Face",
+    "Characters",
 ]
