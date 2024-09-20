@@ -1,7 +1,7 @@
 # Makefile for Pybricks projects
 
 # Default filename (can be overridden from command line)
-filename ?= ./scripts/demos/demo.py
+filename ?= ./projects/demos/demo.py
 
 # Temporary file
 TEMP_FILE := ./main.py
