@@ -72,7 +72,7 @@ hub to you computer via Bluetooth using the pybricks [web-based code editor](htt
 Then you can run the following command 
 
 ```
-pybricksdev run ble --name "InventorHub" demo.py
+make run filename=demo.py
 ```
 
 
