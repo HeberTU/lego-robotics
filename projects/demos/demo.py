@@ -6,10 +6,8 @@ Created on: 20/9/24
 Licence,
 """
 from pybricks.hubs import InventorHub
-from pybricks.tools import wait
 from pybricks.parameters import Side
 
-from src.animations import Characters
 
 def main():
 

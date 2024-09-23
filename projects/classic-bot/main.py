@@ -16,7 +16,12 @@ TURN_SPEED = 400
 
 class ClassicBot:
 
-    def __init__(self, right_motor_port: Port, left_motor_port: Port) -> None:
+    def __init__(
+        self,
+        right_motor_port: Port,
+        left_motor_port: Port,
+        claw_motor_port: Port
+    ) -> None:
         """Initiate the classic bot.
 
         Args:
@@ -26,6 +31,7 @@ class ClassicBot:
         self.hub = InventorHub()
         self.right_motor = Motor(right_motor_port)
         self.left_motor = Motor(left_motor_port)
+        self.claw_motor = Motor(claw_motor_port)
 
         self.connect_radio_control()
 
@@ -65,6 +71,12 @@ class ClassicBot:
         self.left_motor.run(-speed)
         self.right_motor.run(-speed)
 
+    def open_claw(self, speed: int) -> None:
+        self.claw_motor.run(speed)
+
+    def close_claw(self, speed: int) -> None:
+        self.claw_motor.run(-speed)
+
     def start(self) -> None:
         """Starts the robot."""
         self.hub.speaker.beep()
@@ -85,7 +97,14 @@ class ClassicBot:
             elif Button.RIGHT_MINUS in pressed:
                 self.move_right(speed=TURN_SPEED)
 
+            elif Button.LEFT in pressed:
+                self.open_claw(speed=400)
+
+            elif Button.RIGHT in pressed:
+                self.close_claw(speed=400)
+
             else:
+                self.claw_motor.stop()
                 self.left_motor.stop()
                 self.right_motor.stop()
 
@@ -95,6 +114,7 @@ if __name__ == "__main__":
     classic_bot = ClassicBot(
         right_motor_port=Port.B,
         left_motor_port=Port.A,
+        claw_motor_port=Port.E
     )
 
     classic_bot.start()
