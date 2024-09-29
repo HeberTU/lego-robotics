@@ -10,6 +10,7 @@ packages = [{include = "lego_robotics"}]
 python = " >=3.10,<3.12"
 pybricks = "3.5.0"
 pybricksdev = "^1.0.0a50"
+pre-commit = "^3.8.0"
 
 
 [build-system]
