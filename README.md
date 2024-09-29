@@ -63,7 +63,7 @@ source .venv/bin/activate
 
 ## Connect your Lego Hub
 
-This project runs on LEGO® MINDSTORMS® and SPIKE® hubs. Follow these steps to get started: 
+This project runs on LEGO® MINDSTORMS® and SPIKE® hubs. Follow these steps to get started:
 
 1. Install the Pybricks firmware on your hub by following the official [instructions](https://pybricks.com/learn/getting-started/install-pybricks/#installing-pybricks-on-the-hub)
 2. Connect your hub to your computer via Bluetooth using the Pybricks [web-based code editor](https://code.pybricks.com/) at least once.
@@ -74,7 +74,8 @@ make run
 ```
 You should hear a beep, and the hub's display will show "Hello world!".
 
+## Projects
 
-
-
-
+### Classic Bot
+![Classic Robot 1](./imgs/classic-robot-1.jpg)
+![Classic Robot 2](./imgs/classic-robot-2.jpg)

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-"""This module contains a set of functions to make two motors act as walking
-legs.
+"""Module that contains a set of functions to make two motors walking legs.
 
 Created on: 1/7/23
 @author: Heber Trujillo <heber.trj.urt@gmail.com>
@@ -8,14 +7,12 @@ Licence,
 """
 from pybricks.pupdevices import Motor
 from pybricks.tools import wait
+
 from src.utils import get_waiting_time_to_finish_rotation
 
 
 def set_legs_to_initial_position(
-        right_leg: Motor,
-        left_leg: Motor,
-        speed: int,
-        initial_angle: int = -90
+    right_leg: Motor, left_leg: Motor, speed: int, initial_angle: int = -90
 ) -> None:
     """Set legs to the initial position to do any movement.
 
@@ -32,28 +29,22 @@ def set_legs_to_initial_position(
         initial_angle:
             Initial angle to rotate.
     """
-
-    right_rotation_angle = (initial_angle - right_leg.angle())
-    left_rotation_angle = (initial_angle - left_leg.angle())
+    right_rotation_angle = initial_angle - right_leg.angle()
+    left_rotation_angle = initial_angle - left_leg.angle()
 
     right_leg.run_angle(
-        speed=speed,
-        rotation_angle=right_rotation_angle,
-        wait=False
+        speed=speed, rotation_angle=right_rotation_angle, wait=False
     )
 
     left_leg.run_angle(
-        speed=speed,
-        rotation_angle=left_rotation_angle,
-        wait=False
+        speed=speed, rotation_angle=left_rotation_angle, wait=False
     )
 
     time_to_wait = get_waiting_time_to_finish_rotation(
         speed=speed,
         rotation_angle=max(
-            abs(right_rotation_angle),
-            abs(left_rotation_angle)
-        )
+            abs(right_rotation_angle), abs(left_rotation_angle)
+        ),
     )
 
     wait(time_to_wait + 100)
@@ -63,12 +54,9 @@ def set_legs_to_initial_position(
 
 
 def walk(
-        right_leg: Motor,
-        left_leg: Motor,
-        speed: int,
-        forward: bool = True
+    right_leg: Motor, left_leg: Motor, speed: int, forward: bool = True
 ) -> None:
-    """
+    """Walk.
 
     Args:
         right_leg: Motor
@@ -82,21 +70,14 @@ def walk(
     """
     direction = -1 if forward else 1
 
-    right_leg.run(
-        speed=speed * direction
-    )
-    left_leg.run(
-        speed=speed * -direction
-    )
+    right_leg.run(speed=speed * direction)
+    left_leg.run(speed=speed * -direction)
 
 
 def turn(
-        right_leg: Motor,
-        left_leg: Motor,
-        speed: int,
-        left: bool = True
+    right_leg: Motor, left_leg: Motor, speed: int, left: bool = True
 ) -> None:
-    """Turn into the provideddirection
+    """Turn into the provided direction.
 
     Args:
         right_leg: Motor
@@ -113,33 +94,22 @@ def turn(
     direction = -1 if left else 1
 
     wating_to_finish = get_waiting_time_to_finish_rotation(
-        speed=speed,
-        rotation_angle=rotation_angle
+        speed=speed, rotation_angle=rotation_angle
     )
 
     left_leg.run_angle(
-        speed=speed * -direction,
-        rotation_angle=rotation_angle,
-        wait=False
+        speed=speed * -direction, rotation_angle=rotation_angle, wait=False
     )
     right_leg.run_angle(
-        speed=speed * -direction,
-        rotation_angle=rotation_angle,
-        wait=False
+        speed=speed * -direction, rotation_angle=rotation_angle, wait=False
     )
     wait(wating_to_finish + 200)
 
     # One step forward to balance
-    left_leg.run_angle(
-        speed=speed,
-        rotation_angle=rotation_angle,
-        wait=False
-    )
+    left_leg.run_angle(speed=speed, rotation_angle=rotation_angle, wait=False)
 
     right_leg.run_angle(
-        speed=-speed,
-        rotation_angle=rotation_angle,
-        wait=False
+        speed=-speed, rotation_angle=rotation_angle, wait=False
     )
     wait(wating_to_finish + 200)
 
@@ -149,7 +119,7 @@ def turn_by_n_steps(
     left_leg: Motor,
     speed: int,
     steps: int,
-    left: bool = True
+    left: bool = True,
 ) -> None:
     """Turn left to n steps.
 
@@ -177,16 +147,11 @@ def turn_by_n_steps(
         right_leg=right_leg,
         left_leg=left_leg,
         speed=speed,
-        initial_angle=initial_angle
+        initial_angle=initial_angle,
     )
 
-    for i in range(steps):
-        turn(
-            right_leg=right_leg,
-            left_leg=left_leg,
-            speed=speed,
-            left=left
-        )
+    for _ in range(steps):
+        turn(right_leg=right_leg, left_leg=left_leg, speed=speed, left=left)
 
     for leg in [right_leg, left_leg]:
         leg.reset_angle()

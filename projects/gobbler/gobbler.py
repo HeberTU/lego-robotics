@@ -5,14 +5,13 @@ Created on: 14/6/23
 @author: Heber Trujillo <heber.trj.urt@gmail.com>
 Licence,
 """
+import urandom
 from pybricks.hubs import InventorHub
-from pybricks.parameters import Side, Port, Stop, Color
+from pybricks.parameters import Axis, Color, Port, Side, Stop
+from pybricks.pupdevices import ColorSensor, Motor
 from pybricks.tools import wait
-from pybricks.pupdevices import Motor, ColorSensor
-from pybricks.geometry import Axis
 
 from src.animations import Face
-import urandom
 
 
 def wake_up(hub: InventorHub, motor: Motor) -> None:
@@ -20,21 +19,14 @@ def wake_up(hub: InventorHub, motor: Motor) -> None:
 
     Args:
         hub: InventorHub
-            Inventor hub.
+        motor: Motor.
     """
     hub.display.orientation(up=Side.LEFT)
-    motor.run_target(
-        speed=100,
-        target_angle=290,
-        then=Stop.BRAKE,
-        wait=False
-    )
+    motor.run_target(speed=100, target_angle=290, then=Stop.BRAKE, wait=False)
     eyes_animation = [Face.EYES_CLOSE, Face.EYES_OPEN]
     for _ in range(3):
         for icon in eyes_animation:
-            hub.display.icon(
-                icon=icon
-            )
+            hub.display.icon(icon=icon)
             wait(400)
 
 
@@ -47,28 +39,18 @@ def waiting_animation(hub: InventorHub, blink_time: int = 100) -> None:
         blink_time: int = 100
             ms for blinking action.
     """
-    hub.display.icon(
-        icon=Face.EYES_OPEN
-    )
-    wait(
-        time=urandom.randrange(
-            1000,
-            3000,
-            500
-        )
-    )
+    hub.display.icon(icon=Face.EYES_OPEN)
+    wait(time=urandom.randrange(1000, 3000, 500))
     for _ in range(urandom.randrange(1, 3, 1)):
-        hub.display.icon(
-            icon=Face.EYES_CLOSE
-        )
+        hub.display.icon(icon=Face.EYES_CLOSE)
         wait(time=blink_time)
-        hub.display.icon(
-            icon=Face.EYES_OPEN
-        )
+        hub.display.icon(icon=Face.EYES_OPEN)
         wait(time=blink_time)
 
 
-def eat_paper(color_sensor: ColorSensor, motor: Motor, paper_color: Color) -> None:
+def eat_paper(
+    color_sensor: ColorSensor, motor: Motor, paper_color: Color
+) -> None:
     """Eat paper.
 
     Args:
@@ -91,19 +73,14 @@ def eat_paper(color_sensor: ColorSensor, motor: Motor, paper_color: Color) -> No
 
     motor.stop()
 
-    motor.run_target(
-        speed=300,
-        target_angle=290,
-        then=Stop.BRAKE,
-        wait=True
-    )
+    motor.run_target(speed=300, target_angle=290, then=Stop.BRAKE, wait=True)
 
 
 def wait_for_tapping(
-        hub: InventorHub,
-        motor: Motor,
-        color_sensor: ColorSensor,
-        paper_color: Color
+    hub: InventorHub,
+    motor: Motor,
+    color_sensor: ColorSensor,
+    paper_color: Color,
 ) -> None:
     """Wait for tapping.
 
@@ -117,22 +94,14 @@ def wait_for_tapping(
         paper_color: Color
             color of the paper that the gobbler will eat.
     """
-
     while True:
-        waiting_animation(
-            hub=hub
-        )
-        a_t1 = hub.imu.acceleration(axis=Axis.Y)
+        waiting_animation(hub=hub)
+        a_t1 = hub.imu.acceleration(axis=Axis.Y)  # type: ignore[call-overload]
         if abs(a_t1) > 150:
             motor.run_target(
-                speed=500,
-                target_angle=0,
-                then=Stop.BRAKE,
-                wait=False
+                speed=500, target_angle=0, then=Stop.BRAKE, wait=False
             )
-            hub.display.icon(
-                icon=Face.EYES_ANGRY
-            )
+            hub.display.icon(icon=Face.EYES_ANGRY)
             eat_paper(
                 color_sensor=color_sensor,
                 motor=motor,
@@ -141,7 +110,7 @@ def wait_for_tapping(
 
 
 def main():
-    """Main Script."""
+    """Start main Script."""
     hub = InventorHub(top_side=-Axis.X, front_side=-Axis.Y)
     motor = Motor(Port.A)
     color_sensor = ColorSensor(Port.E)
@@ -155,6 +124,6 @@ def main():
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # pybricksdev run ble gobbler.py
     main()

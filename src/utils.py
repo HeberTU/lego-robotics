@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
+"""Utils module.
 
 Created on: 1/7/23
 @author: Heber Trujillo <heber.trj.urt@gmail.com>
@@ -9,11 +9,9 @@ import umath
 
 
 def get_waiting_time_to_finish_rotation(
-        speed: int,
-        rotation_angle: int
+    speed: int, rotation_angle: int
 ) -> int:
-    """Get how much time is needed to wait for a motor to rotate the specified
-    degrees.
+    """Get how much time is needed for a motor to rotate to the degrees.
 
     Args:
         speed: int
@@ -25,4 +23,4 @@ def get_waiting_time_to_finish_rotation(
         int:
             Number of milliseconds to wait.
     """
-    return umath.ceil((rotation_angle / speed) * 1000)
+    return int(umath.ceil((rotation_angle / speed) * 1000))
