@@ -6,19 +6,15 @@ Created on: 20/9/24
 Licence,
 """
 from pybricks.hubs import InventorHub
-from pybricks.tools import wait
 from pybricks.parameters import Side
 
-from src.animations import Characters
 
 def main():
 
     hub = InventorHub()
     hub.display.orientation(up=Side.TOP)
-    hub.display.icon(
-        icon=Characters.OK
-    )
-    wait(1000)
+    hub.speaker.beep()
+    hub.display.text("Hello world!")
 
 
 
