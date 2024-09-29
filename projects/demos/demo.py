@@ -10,16 +10,13 @@ from pybricks.parameters import Side
 
 
 def main():
-
+    """Start main function."""
     hub = InventorHub()
     hub.display.orientation(up=Side.TOP)
     hub.speaker.beep()
     hub.display.text("Hello world!")
 
 
-
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     # pybricksdev run ble demo.py
     main()

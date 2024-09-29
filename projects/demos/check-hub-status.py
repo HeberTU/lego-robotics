@@ -1,6 +1,8 @@
+"""Script to check battery related info."""
 from pybricks.hubs import InventorHub
 
-def main():
 
+def main():
+    """Start main function."""
     hub = InventorHub()
     print(f"Current: {hub.battery.current()}")

@@ -6,14 +6,14 @@ Created on: 20/9/24
 Licence,
 """
 from pybricks.hubs import InventorHub
+from pybricks.parameters import Button, Color, Port
 from pybricks.pupdevices import Motor, Remote
-from pybricks.parameters import Port, Color, Button
 
 MAX_SPEED = 720
 
 
 def main():
-
+    """Start main function."""
     hub = InventorHub()
     motor = Motor(Port.A)
 
@@ -26,7 +26,6 @@ def main():
 
     print("Hub and remote control connected!")
 
-
     while True:
         pressed = rc.buttons.pressed()
 
@@ -36,7 +35,6 @@ def main():
             motor.run(-speed)
         else:
             motor.stop()
-
 
 
 if __name__ == "__main__":

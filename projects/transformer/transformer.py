@@ -6,21 +6,20 @@ Created on: 26/6/23
 Licence,
 """
 from pybricks.hubs import InventorHub
-from pybricks.pupdevices import Motor, UltrasonicSensor
 from pybricks.parameters import Port
-
+from pybricks.pupdevices import Motor, UltrasonicSensor
 from pybricks.tools import wait
 
 from src.movement.walking import (
     set_legs_to_initial_position,
-    walk,
     turn_by_n_steps,
+    walk,
 )
 
 
 def initialize_robot(
-        right_leg_port: Port,
-        left_leg_port: Port,
+    right_leg_port: Port,
+    left_leg_port: Port,
 ):
     """Initialize robot legs.
 
@@ -31,22 +30,15 @@ def initialize_robot(
 
     """
     legs = (
-        Motor(
-            port=right_leg_port,
-            reset_angle=True
-        ),
-        Motor(
-            port=left_leg_port,
-            reset_angle=True
-        )
+        Motor(port=right_leg_port, reset_angle=True),
+        Motor(port=left_leg_port, reset_angle=True),
     )
 
     return legs
 
 
-def calibrate_robot(
-        torso: Motor
-) -> None:
+def calibrate_robot(torso: Motor) -> None:
+    """Calibrate robot."""
     print(f" Torso initial angle {torso.angle()}")
 
     # torso.run_time(
@@ -54,9 +46,7 @@ def calibrate_robot(
     #     time=1000
     # )
 
-    torso.run(
-        speed=50
-    )
+    torso.run(speed=50)
     while not torso.stalled():
         wait(5)
 
@@ -66,7 +56,7 @@ def calibrate_robot(
 
 
 def main():
-    """Main script"""
+    """Start main script."""
     is_distance_sensor_connected: bool = False
     do_calibration: bool = False
 
@@ -75,11 +65,10 @@ def main():
     if is_distance_sensor_connected:
         eyes = UltrasonicSensor(port=Port.D)
     else:
-        class MockUltrasonicSensor:
 
+        class MockUltrasonicSensor:
             def __init__(self, time_to_wait: int):
-                """Initialize a mock whenever a distance sensor is not
-                connected.
+                """Initialize a mock whenever if no distance sensor.
 
                 Args:
                     time_to_wait: int
@@ -107,9 +96,7 @@ def main():
     )
 
     if do_calibration:
-        calibrate_robot(
-            torso=torso
-        )
+        calibrate_robot(torso=torso)
 
     set_legs_to_initial_position(
         right_leg=right_leg,
@@ -118,13 +105,7 @@ def main():
     )
 
     while True:
-
-        walk(
-            right_leg=right_leg,
-            left_leg=left_leg,
-            speed=200,
-            forward=True
-        )
+        walk(right_leg=right_leg, left_leg=left_leg, speed=200, forward=True)
 
         while eyes.distance() > 50:
             wait(20)
@@ -138,6 +119,6 @@ def main():
         )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # pybricksdev run ble transformer.py
     main()
