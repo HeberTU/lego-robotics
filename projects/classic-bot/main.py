@@ -2,7 +2,7 @@
 
 Created on: 2024-09-20
 @author: Heber Trujillo <heber.trj.urt@gmail.com>
-License: [Add appropriate license here]
+License: MIT
 """
 from pybricks.hubs import InventorHub
 from pybricks.parameters import Button, Color, Port
