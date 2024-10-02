@@ -7,6 +7,7 @@ License: MIT
 from pybricks.hubs import InventorHub
 from pybricks.parameters import Button, Port
 from pybricks.pupdevices import Motor
+from pybricks.tools import wait
 
 
 class BasicMotorControl:
@@ -16,9 +17,11 @@ class BasicMotorControl:
         """Initialize the basic motor."""
         self.hub = InventorHub()
         self.motor: Motor = Motor(port=Port.A)
-        self.init_speed = 0
+        self.speed: int = 0
+        self.last_pressed: set = set()
+        self.increase: int = 100
 
-    def update_moto_move(self, button: Button) -> None:
+    def update_motor_move(self, button: Button) -> None:
         """Update the motor speed.
 
         Args:
@@ -28,21 +31,31 @@ class BasicMotorControl:
             None
         """
         if button == Button.LEFT:
-            self.init_speed += 100
+            self.speed += self.increase
         elif button == Button.RIGHT:
-            self.init_speed -= 100
+            self.speed -= self.increase
 
     def start(self) -> None:
         """Start the robot operation."""
         while True:
-            pressed = self.hub.buttons.pressed()
+            current_pressed = set(self.hub.buttons.pressed())
+            new_presses = current_pressed - self.last_pressed
 
-            if Button.LEFT or Button.RIGHT in pressed:
-                self.update_moto_move(button=Button.LEFT)
-                self.motor.run(self.init_speed)
+            print(f"Speed: {self.speed}")
 
-            if self.init_speed == 0:
+            if Button.LEFT in new_presses:
+                self.update_motor_move(button=Button.LEFT)
+                self.motor.run(self.speed)
+
+            elif Button.RIGHT in new_presses:
+                self.update_motor_move(button=Button.RIGHT)
+                self.motor.run(self.speed)
+
+            if self.speed == 0:
                 self.motor.stop()
+
+            self.last_pressed = current_pressed
+            wait(100)  # Small delay to avoid excessive CPU usage
 
 
 if __name__ == "__main__":
