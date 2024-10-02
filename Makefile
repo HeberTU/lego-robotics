@@ -1,4 +1,5 @@
 filename ?= ./projects/demos/demo.py
+hubname ?= InventorHub
 
 # Temporary file
 TEMP_FILE := ./main.py
@@ -14,7 +15,7 @@ run:
 	@echo "Copying $(filename) to $(TEMP_FILE)"
 	@cp $(filename) $(TEMP_FILE)
 	@echo "Running pybricksdev with $(TEMP_FILE)"
-	$(POETRY_RUN) pybricksdev run ble --name "InventorHub" $(TEMP_FILE)
+	$(POETRY_RUN) pybricksdev run ble --name $(hubname) $(TEMP_FILE)
 	@echo "Removing $(TEMP_FILE)"
 	@rm $(TEMP_FILE)
 
